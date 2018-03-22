@@ -1,6 +1,6 @@
 pragma solidity ^0.4.8;
-import './../Interfaces/IOwned.sol';
-import './../Interfaces/IToken.sol';
+import './IOwned.sol';
+import './IToken.sol';
 
 contract IMENA is IOwned, IToken {
 
@@ -19,7 +19,9 @@ contract IMENA is IOwned, IToken {
     
     function destroy(address _from, uint256 _amount) public;
 
-    
+    function issueBlockReward() public;
+
+    function BuyToken(uint amount) payable public;
 
     
 }

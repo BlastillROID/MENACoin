@@ -1,5 +1,5 @@
 pragma solidity ^0.4.8;
-import './../Interfaces/ITokenholder.sol';
+import './ITokenHolder.sol';
 import './Owned.sol';
 import './Utils.sol';
 

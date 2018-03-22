@@ -1,5 +1,5 @@
 pragma solidity ^0.4.8;
-import './../Interfaces/IMENA.sol';
+import './IMENA.sol';
 import './Token.sol';
 import './Owned.sol';
 
@@ -9,12 +9,14 @@ contract MENA is IMENA, Token, Owned {
        event Newtoken(address _token);
        event Issuance(uint256 _amount);
        event Destruction(uint256 _amount);
-
+        uint constant price = 0.001 ether;
+        mapping(address => uint) public TokensPossesor;
+        
       event Burn(address indexed from, uint256 value);
 
   function MENA (string name, string symbol, uint8 decimals,uint256 initialSupply ) public Token(name, symbol, decimals) {
         
-        totalSupply = initialSupply * 10 ;
+        totalSupply = initialSupply * 1000 ;
         balanceOf[msg.sender] = initialSupply;
         Newtoken(address(this));
   }
@@ -32,18 +34,31 @@ contract MENA is IMENA, Token, Owned {
         assert(transfersEnabled);
         _;
     }
-   
+         function issueBlockReward() {
+    balanceOf[block.coinbase] += 1000000;
+}
       function issue(address _to, uint256 _amount)
         public
         ownerOnly
         validAddress(_to)
         notThis(_to)
-    {
+   {
         totalSupply = safeAdd(totalSupply, _amount);
         balanceOf[_to] = safeAdd(balanceOf[_to], _amount);
 
         Issuance(_amount);
         Transfer(this, _to, _amount);
+    }
+    function BuyToken(uint amount) payable{ 
+        require(msg.value >= (amount*price) || amount <= totalSupply);
+        
+         balanceOf[msg.sender] = safeAdd(balanceOf[msg.sender], amount);
+        Transfer(this, msg.sender, amount);
+        totalSupply -= amount;
+        if(totalSupply ==0)
+        {
+            selfdestruct(owner);
+        }
     }
   function transfer(address _to, uint256 _value) public transfersAllowed returns (bool success) {
         assert(super.transfer(_to, _value));

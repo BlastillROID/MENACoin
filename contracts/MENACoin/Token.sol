@@ -1,5 +1,5 @@
 pragma solidity ^0.4.8;
-import './../Interfaces/IToken.sol';
+import './IToken.sol';
 import './Utils.sol';
 
 interface tokenRecipient { function receiveApproval(address _from, uint256 _value, address _token, bytes _extraData) public; }
