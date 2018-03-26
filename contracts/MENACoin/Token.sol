@@ -34,7 +34,7 @@ contract Token is Utils ,IToken {
         validAddress(_to)
         returns (bool success)
     {
-        balanceOf[msg.sender] = safeSub(balanceOf[msg.sender], _value);
+       // balanceOf[msg.sender] = safeSub(balanceOf[msg.sender], _value);
         balanceOf[_to] = safeAdd(balanceOf[_to], _value);
         Transfer(msg.sender, _to, _value);
         return true;
