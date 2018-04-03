@@ -1,4 +1,4 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.21;
 import './ITokenHolder.sol';
 import './Owned.sol';
 import './Utils.sol';

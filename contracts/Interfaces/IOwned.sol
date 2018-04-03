@@ -1,7 +1,7 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.21;
 contract IOwned {
-  function IOwned() {}
-   function owner() public view returns (address) {}
+  function IOwned() public {}
+   function owner() public pure returns (address) {}
     function transferOwnership(address _newOwner) public;
-    function acceptOwnership() public;
+  //  function acceptOwnership() public;
 }

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.21;
 
 contract IToken {
 
@@ -21,6 +21,7 @@ contract IToken {
    
     function approveAndCall(address _spender, uint256 _value, bytes _extraData)
         public
+       
         returns (bool success)
         {
           _spender; _value; _extraData;
@@ -28,4 +29,5 @@ contract IToken {
     
 
  
+
 }

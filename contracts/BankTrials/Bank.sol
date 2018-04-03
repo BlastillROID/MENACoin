@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 // Bank Of Deposit
 //
 // This contract keeps user's ethers in its internal storage. This approach

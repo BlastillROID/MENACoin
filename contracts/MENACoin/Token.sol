@@ -1,8 +1,8 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.21;
 import './IToken.sol';
 import './Utils.sol';
 
-interface tokenRecipient { function receiveApproval(address _from, uint256 _value, address _token, bytes _extraData) public; }
+interface tokenRecipient { function receiveApproval(address _from, uint256 _value, address _token, bytes _extraData) external; }
 
 
 contract Token is Utils ,IToken {
@@ -34,9 +34,9 @@ contract Token is Utils ,IToken {
         validAddress(_to)
         returns (bool success)
     {
-       // balanceOf[msg.sender] = safeSub(balanceOf[msg.sender], _value);
+        balanceOf[msg.sender] = safeSub(balanceOf[msg.sender], _value);
         balanceOf[_to] = safeAdd(balanceOf[_to], _value);
-        Transfer(msg.sender, _to, _value);
+       emit Transfer(msg.sender, _to, _value);
         return true;
     }
 
@@ -46,10 +46,10 @@ contract Token is Utils ,IToken {
         validAddress(_to)
         returns (bool success)
     {
-        allowance[_from][msg.sender] = safeSub(allowance[_from][msg.sender], _value);
+        //allowance[_from][msg.sender] = safeSub(allowance[_from][msg.sender], _value);
         balanceOf[_from] = safeSub(balanceOf[_from], _value);
         balanceOf[_to] = safeAdd(balanceOf[_to], _value);
-        Transfer(_from, _to, _value);
+        emit Transfer(_from, _to, _value);
         return true;
     }
 
@@ -64,7 +64,7 @@ contract Token is Utils ,IToken {
         require(_value == 0 || allowance[msg.sender][_spender] == 0);
 
         allowance[msg.sender][_spender] = _value;
-        Approval(msg.sender,_spender, _value);
+    emit Approval(msg.sender,_spender, _value);
         return true;
     }
 

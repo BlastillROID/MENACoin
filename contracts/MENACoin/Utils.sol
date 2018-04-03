@@ -1,18 +1,18 @@
 
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.21;
 
 contract Utils {
-     function Utils() public 
+      function Utils() public 
      {
     }
-  function safeAdd(uint a, uint b) internal returns (uint) {
+  function safeAdd(uint a, uint b) internal pure returns (uint) {
   if (a + b < a) {
       revert(); 
       }
   return a + b;
 }
 
-function safeSub(uint a, uint b) internal returns (uint) {
+function safeSub(uint a, uint b) internal pure returns (uint) {
   if (b > a) {revert();}
   return a - b;
 }
