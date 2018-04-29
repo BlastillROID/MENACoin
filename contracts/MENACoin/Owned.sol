@@ -1,9 +1,11 @@
-pragma solidity ^0.4.20;
+pragma solidity ^0.4.21;
 import './IOwned.sol';
 contract Owned is IOwned {
   
   address public owner;
     address public newOwner;
+    address public coinSeller;
+    address public crowdSale;
 
     event OwnerUpdate(address indexed _prevOwner, address indexed _newOwner);
 
@@ -12,14 +14,23 @@ contract Owned is IOwned {
     */
     function Owned() public {
         owner = msg.sender;
+        
+    }
+    
+    function SetCrowdSale(address Sale) public ownerOnly {
+        crowdSale = Sale;
+        
+    }
+    function SetCoinSeller(address seller) public ownerOnly{
+        coinSeller = seller;
     }
 
     // allows execution by the owner only
     modifier ownerOnly {
-        assert(msg.sender == owner);
+        assert((msg.sender == owner)|| (msg.sender == coinSeller) || (msg.sender == crowdSale));
         _;
     }
-
+    
     /**
         @dev allows transferring the contract ownership
         the new owner still needs to accept the transfer
@@ -35,7 +46,7 @@ contract Owned is IOwned {
     /**
         @dev used by a new owner to accept an ownership transfer
     */
-    /*function acceptOwnership() public {
+  /*  function acceptOwnership() public {
         require(msg.sender == newOwner);
         emit OwnerUpdate(owner, newOwner);
         owner = newOwner;

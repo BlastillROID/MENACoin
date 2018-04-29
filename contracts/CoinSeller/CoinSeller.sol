@@ -11,6 +11,7 @@ contract CoinSeller is Owned {
     
     event Sold(address _to,uint amount);
     uint256 public priceOfHeadToken;
+    address child;
     token public HeadToken;
     token public Child;
     
@@ -19,7 +20,16 @@ contract CoinSeller is Owned {
         HeadToken = token(headToken);
        
     }
-    function setChild( address child) public {
+    function setChildAddress(address CH) public {
+        require(CH != 0x0);
+        child = CH;
+        
+    }
+    modifier ValidChild(){
+        require(child != 0x0);
+        _;
+    }
+    function setChild() public ValidChild() {
          Child = token(child);
     }
     modifier SufficientFunds(address _address,uint amount){
