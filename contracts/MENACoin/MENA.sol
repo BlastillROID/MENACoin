@@ -67,8 +67,13 @@ contract MENA is IMENA, Token, Owned {
         assert(super.transfer(_to, _value));
         return true;
     }
-    function transferFrom(address _from, address _to, uint256 _value) public transfersAllowed returns (bool success) {
-        assert(super.transferFrom(_from, _to, _value));
+    
+    function transferFrom(address _from, address _to, uint256 _value) public transfersAllowed validAddress(_from)
+        validAddress(_to) returns (bool success) {
+        allowance[_from][msg.sender] = safeSub(allowance[_from][msg.sender], _value);
+        balanceOf[_from] = safeSub(balanceOf[_from], _value);
+        balanceOf[_to] = safeAdd(balanceOf[_to], _value);
+       emit Transfer(_from, _to, _value);
         return true;
     }
     function increaseSupply(uint value, address to) public returns (bool) {
@@ -81,19 +86,19 @@ contract MENA is IMENA, Token, Owned {
     function disableTransfers(bool _disable) public ownerOnly {
         transfersEnabled = !_disable;
     }
-    function decreaseSupply(uint value, address from) public returns (bool) {
-  balanceOf[from] = safeSub(balanceOf[from], value);
-  totalSupply = safeSub(totalSupply, value);  
-  emit Transfer(from, 0, value);
-  return true;
-}
- function burn(uint256 _value) public returns (bool success) {
+     function decreaseSupply(uint value, address from) public returns (bool) {
+     balanceOf[from] = safeSub(balanceOf[from], value);
+     totalSupply = safeSub(totalSupply, value);  
+     emit Transfer(from, 0, value);
+     return true;
+    }
+    function burn(uint256 _value) public returns (bool success) {
         require(balanceOf[msg.sender] >= _value);   
         balanceOf[msg.sender] -= _value;            
         totalSupply -= _value;                     
       emit Burn(msg.sender, _value);
         return true;
-    }
+     }
 
    
     function burnFrom(address _from, uint256 _value) public returns (bool success) {

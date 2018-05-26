@@ -3,6 +3,7 @@ import "./Owned.sol";
 
 contract token{
     function destroy(address _from,uint _amout) external;
+    function transferFrom(address _from, address _to, uint256 _value) external;
     function transfer(address _to, uint _amout) external;
      mapping (address => uint256) public balanceOf;
 }
@@ -12,6 +13,7 @@ contract CoinSeller is Owned {
     event Sold(address _to,uint amount);
     uint256 public priceOfHeadToken;
     address child;
+    address self;
     token public HeadToken;
     token public Child;
     
@@ -37,11 +39,13 @@ contract CoinSeller is Owned {
         _;
     }
     function BuyToken(uint amount)public SufficientFunds(msg.sender,amount){
-       
-        HeadToken.destroy(msg.sender,amount*priceOfHeadToken);
+        //Here is to be changed from desroy to normal transer ;
+        
+        HeadToken.transferFrom(msg.sender,this,priceOfHeadToken*amount);
         Child.transfer(msg.sender,amount);
        emit Sold(msg.sender,amount);
     }
+  
     
     
 }
